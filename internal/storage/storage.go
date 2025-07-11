@@ -2,7 +2,6 @@ package storage
 
 import (
 	"log"
-	"time"
 
 	"github.com/devRaelBraga/rinha-backend-go/internal/types"
 )
@@ -25,7 +24,7 @@ func NewStorage() *Storage {
 	return s
 }
 
-func Increment(s *Storage, processorURL string, amount float64) {
+func (s *Storage) Increment(processorURL string, amount float64) {
 	summary := s.summaries[processorURL]
 	summary.TotalRequests++
 	summary.TotalAmount += amount
@@ -33,7 +32,7 @@ func Increment(s *Storage, processorURL string, amount float64) {
 	log.Printf("Incremented summary for %s: requests=%d, amount=%.2f", processorURL, summary.TotalRequests, summary.TotalAmount)
 }
 
-func GetSummary(s *Storage, from, to *time.Time) (types.SummaryResponse, error) {
+func (s *Storage) GetSummary() (types.SummaryResponse, error) {
 	summary := types.SummaryResponse{
 		Default:  s.summaries[s.defaultURL],
 		Fallback: s.summaries[s.fallbackURL],
